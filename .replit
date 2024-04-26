@@ -1,0 +1,22 @@
+language = "nodejs"
+run = "npm start"
+
+[deployment]
+deploymentTarget = "cloudrun"
+run = ["sh", "-c", "node index.js"]
+
+[[ports]]
+localPort = 3000
+externalPort = 3001
+
+[[ports]]
+localPort = 4000
+externalPort = 3000
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[[ports]]
+localPort = 8000
+externalPort = 8000

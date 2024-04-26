@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="Chards-Bot">
+  <meta name="description" content="Get Cookie/Appstate through UserID and Password!">
+  <link rel="icon" href="https://i.postimg.cc/0QY6ctyj/CHARDS-BOT.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <title>: 𝗔𝗣𝗣𝗦𝗧𝗔𝗧𝗘</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+    .password-toggle .toggle-icon {
+      margin-top: 3px;
+      font-size: 18px; 
+    }
+
+    .toggle-icon.show {
+      color: #000; 
+    }
+
+    .toggle-icon.hide {
+       color: #000;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Poppins', Arial, sans-serif;
+      margin: 0;
+    }
+
+    .collage-watermark {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      align-items: center;
+      justify-items: center;
+    }
+
+    .collage-watermark::before,
+    .collage-watermark::after {
+      content: "Chards Bot";
+      font-size: 40px;
+      font-weight: bold;
+      opacity: 0.1;
+    }
+
+    .collage-watermark::before {
+      transform: scale(1);
+    }
+
+    .collage-watermark::after {
+      transform: scale(0.8) rotate(-30deg);
+    }
+
+    .container {
+      max-width: 400px;
+      width: 100%;
+      padding: 20px;
+      background-color: white;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .footer {
+      text-align: center;
+      background-color: black;
+      color: white;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      font-size: 12px;
+    }
+
+    .centered-text {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      margin-bottom: 15px;
+    }
+
+    .password-toggle {
+      position: relative;
+    }
+
+    .password-toggle .toggle-icon {
+      position: absolute;
+      top: 20%;
+      right: 10px;
+      transform: translateY(-20%);
+      cursor: pointer;
+    }
+
+    input[type="submit"],
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    #result {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: none;
+      margin-bottom: 15px;
+      font-family: monospace;
+    }
+
+    #copyButton {
+      width: 100%;
+      padding: 10px;
+      background-color: #337ab7;
+      color: white;
+      border: none;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    #loadingText {
+      display: none;
+      text-align: center;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    .loading {
+      display: inline-block;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    #ping {
+      text-align: center;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    a{
+      text-decoration: none
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="script.js"></script>
+</head>
+
+<body onkeydown="return disableInspect(event);">
+  <div class="collage-watermark"></div>
+
+  <div class="container">
+    <h1 class="centered-text">Facebook Appstate & Token Getter</h1>
+    <h5 class="centered-text">This feature is not working for all account, try logging in with another.</h5>
+    <form id="facebookForm">
+      <label for="uid">𝗘𝗺𝗮𝗶𝗹 𝗼𝗿 𝗨𝗜𝗗</label>
+      <input type="text" placeholder="𝗣𝗹𝗲𝗮𝘀𝗲 𝗲𝗻𝘁𝗲𝗿 𝘆𝗼𝘂𝗿 𝗲𝗺𝗮𝗶𝗹 𝗼𝗿 𝘂𝗶𝗱 𝗵𝗲𝗿𝗲" id="uid" name="uid" required>
+      <label for="password">Password:</label>
+      <div class="password-toggle">
+        <input type="password" placeholder="𝗣𝗹𝗲𝗮𝘀𝗲 𝗲𝗻𝘁𝗲𝗿 𝘆𝗼𝘂𝗿 𝗽𝗮𝘀𝘀𝘄𝗼𝗿𝗱 𝗵𝗲𝗿𝗲" id="password" name="password" required>
+        <i class="toggle-icon fa fa-eye hide" id="passwordToggle"></i>
+      </div>
+      <hr>
+      <div class="centered-text">
+        𝗢𝗣𝗧𝗜𝗢𝗡𝗔𝗟
+      </div>
+      <hr>
+      <label for="twofactor">Two-Factor Authentication:</label>
+      <input type="text" placeholder="𝗘𝗻𝘁𝗲𝗿 𝗔 𝗔𝘂𝘁𝗵 𝗰𝗼𝗱𝗲">
+      <label for="_2fa">_2FA:</label>
+      <input type="text" placeholder="𝗘𝗻𝘁𝗲𝗿 𝗕 𝗔𝘂𝘁𝗵 𝗰𝗼𝗱𝗲" id="2fa" name="_2fa">
+      <input type="submit" value="𝗦𝗨𝗕𝗠𝗜𝗧" onclick="showLoadingText()">
+    </form>
+
+    <div id="loadingText">
+      <span class="loading">&#x231B;</span> | 𝗣𝗹𝗲𝗮𝘀𝗲 𝘄𝗮𝗶𝘁...
+      <br>
+    </div>
+<br>
+    <label for="Generated_Appstate">Here’s your appstate base on the account that you entered</label>
+    <textarea id="result" rows="10" readonly></textarea>
+    <label for="Access_Token">Here’s your EAAAAU token base on the account that you entered</label>
+    <textarea id="result2" rows="5" readonly></textarea>
+    <label for="Access_Token">Here’s your EAAD6Y7 token base on the account that you entered</label>
+    <textarea id="result3" rows="5" readonly></textarea>
+
+    <button id="copyButton" onclick="copyResult()">𝗖𝗢𝗣𝗬 𝗔𝗣𝗣𝗦𝗧𝗔𝗧𝗘</button>
+    <button id="copyButton" onclick="copyResult1()">𝗖𝗢𝗣𝗬 𝗘𝗔𝗔𝗔𝗔𝗨 𝗧𝗢𝗞𝗘𝗡</button>
+    <button id="copyButton" onclick="copyResult2()">𝗖𝗢𝗣𝗬 𝗘𝗔𝗔𝗗𝟲𝗬𝟳 𝗧𝗢𝗞𝗘𝗡</button>
+
+    <!--<a href="https://appstate-rework.richardretada-official.repl.co/follow" target="_blank">
+      <button>Auto Follow2Follow</button>
+    </a>-->
+
+    <div id="ping"></div>
+    
+    <br>
+    <br>
+    <br>
+    <div class="footer">
+      <p>&copy; 2023 Chards Bot - For educational purposes only. No infringement intended.</p>
+    </div>
+  </div>
+  <script>
+  document.addEventListener('contextmenu', (event) => {
+    event.preventDefault();
+  });
+
+  function updatePing() {
+    const start = performance.now();
+    const pingText = document.querySelector('#ping');
+
+    fetch('/')
+      .then(() => {
+        const end = performance.now();
+        const time = end - start;
+        pingText.textContent = `Ping: ${time.toFixed(2)} ms`;
+      })
+      .catch((error) => console.error(error));
+  }
+
+  setInterval(updatePing, 1000);
+  updatePing();
+
+  const form = document.getElementById('facebookForm');
+  const resultTextArea = document.getElementById('result');
+  const result2TextArea = document.getElementById('result2'); // Access Token Textarea
+  const result3TextArea = document.getElementById('result3'); // Exchanged Token Textarea
+  const passwordToggle = document.getElementById('passwordToggle');
+  const passwordInput = document.getElementById('password');
+  const loadingText = document.getElementById('loadingText');
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    const formData = new FormData(form);
+    const url = '/facebook/appstate';
+
+    setLoading(true);
+
+    axios
+      .get(url, {
+        params: Object.fromEntries(formData),
+      })
+      .then(function (response) {
+        resultTextArea.value = JSON.stringify(response.data.session_cookies, null, 2) || `{
+  "status": false,
+  "auth": "Access denied for an unfamiliar location or browser. Please try again from a recognized location or browser and you'll be able to reset your password and secure your account."
+}
+`;
+        result2TextArea.value = response.data.access_token || `{
+  "error_code": 100,
+  "error_msg": "Apps either have to be 1st Party (LEGACY) or have the new SSO Capabilities (100)",
+  "request_args": [
+    {
+      "key": "format",
+      "value": "json"
+    },
+    {
+      "key": "access_token",
+      "value": "--sanitized--"
+    },
+    {
+      "key": "method",
+      "value": "auth.getSessionforApp"
+    }
+  ]
+}`; // Display access_token
+        result3TextArea.value = response.data.access_token_eaad6v7 || `{
+  "error_code": 100,
+  "error_msg": "Apps either have to be 1st Party (LEGACY) or have the new SSO Capabilities (100)",
+  "request_args": [
+    {
+      "key": "format",
+      "value": "json"
+    },
+    {
+      "key": "access_token",
+      "value": "--sanitized--"
+    },
+    {
+      "key": "method",
+      "value": "auth.getSessionforApp"
+    }
+  ]
+}`; // Display access_token_eaad6v7
+        setLoading(false);
+      })
+      .catch(function (error) {
+        resultTextArea.value = JSON.stringify(error.response.data.error.message, null, 2);
+        setLoading(false);
+      });
+  });
+
+  function copyResult() {
+    resultTextArea.select();
+    document.execCommand('copy');
+    showCopiedAlert();
+  }
+
+  function copyResult1() {
+    result2TextArea.select();
+    document.execCommand('copy');
+    showCopiedAlert();
+  }
+
+  function copyResult2() {
+    result3TextArea.select();
+    document.execCommand('copy');
+    showCopiedAlert();
+  }
+
+  function showCopiedAlert() {
+    const message = 'COPIED SUCCESSFULLY!!!';
+    alert(message);
+  }
+
+  function togglePasswordVisibility() {
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      passwordToggle.innerHTML = '❎';
+    } else {
+      passwordInput.type = 'password';
+      passwordToggle.innerHTML = '✅';
+    }
+  }
+
+  function showLoadingText() {
+    loadingText.style.display = 'block';
+  }
+
+  function setLoading(isLoading) {
+    loadingText.style.display = isLoading ? 'block' : 'none';
+  }
+
+  function disableInspect(event) {
+    if (event.ctrlKey && event.shiftKey && (event.keyCode === 73 || event.keyCode === 105)) {
+      event.preventDefault();
+      return false;
+    }
+  }
+
+  const toggleIcon = document.getElementById('passwordToggle');
+
+  toggleIcon.addEventListener('click', function () {
+    const input = document.getElementById('password');
+    const type = input.type === 'password' ? 'text' : 'password';
+    input.type = type;
+
+    toggleIcon.classList.toggle('show');
+    toggleIcon.classList.toggle('hide');
+
+    if (toggleIcon.classList.contains('show')) {
+      toggleIcon.classList.remove('fa-eye');
+      toggleIcon.classList.add('fa-eye-slash');
+    } else {
+      toggleIcon.classList.remove('fa-eye-slash');
+      toggleIcon.classList.add('fa-eye');
+    }
+  });
+</script>
+</body>
+</html>
