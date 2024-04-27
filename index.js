@@ -9,7 +9,7 @@ import fakeUa from 'fake-useragent';
 const userAgent = fakeUa();
 
 const app = express();
-const ports = [3000, 4000, 5000, 8000];
+const ports = [3000];
 let currentPortIndex = Math.floor(Math.random() * ports.length);
 let currentPort = ports[currentPortIndex];
 

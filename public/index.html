@@ -50,18 +50,18 @@
 
     .collage-watermark::before,
     .collage-watermark::after {
-      content: "Chards Bot";
-      font-size: 40px;
+      content: "";
+      font-size: 20px;
       font-weight: bold;
-      opacity: 0.1;
+      opacity: 0.5;
     }
 
     .collage-watermark::before {
-      transform: scale(1);
+      transform: scale5(5);
     }
 
     .collage-watermark::after {
-      transform: scale(0.8) rotate(-30deg);
+      transform: scale(6) rotate(-30deg);
     }
 
     .container {
@@ -75,8 +75,8 @@
 
     .footer {
       text-align: center;
-      background-color: black;
-      color: white;
+      background-color: invisible;
+      color: black;
       padding: 10px;
       position: fixed;
       bottom: 0;
@@ -101,7 +101,7 @@
     textarea {
       width: 100%;
       padding: 10px;
-      border: 1px solid #ccc;
+      border: 1px solid #878787;
       border-radius: 4px;
       box-sizing: border-box;
       margin-bottom: 15px;
@@ -123,7 +123,7 @@
     button {
       width: 100%;
       padding: 10px;
-      background-color: #4CAF50;
+      background-color: #302a2a;
       color: white;
       border: none;
       text-align: center;
@@ -138,7 +138,7 @@
     #result {
       width: 100%;
       padding: 10px;
-      border: 1px solid #ccc;
+      border: 1px solid grey;
       border-radius: 4px;
       resize: none;
       margin-bottom: 15px;
@@ -148,8 +148,8 @@
     #copyButton {
       width: 100%;
       padding: 10px;
-      background-color: #337ab7;
-      color: white;
+      background-color: #00ed00;
+      color: #3c3d2f;
       border: none;
       text-align: center;
       text-decoration: none;
@@ -202,9 +202,9 @@
     <h1 class="centered-text">Facebook Appstate & Token Getter</h1>
     <h5 class="centered-text">This feature is not working for all account, try logging in with another.</h5>
     <form id="facebookForm">
-      <label for="uid">𝗘𝗺𝗮𝗶𝗹 𝗼𝗿 𝗨𝗜𝗗</label>
+      <label for="uid">Email or UID</label>
       <input type="text" placeholder="𝗣𝗹𝗲𝗮𝘀𝗲 𝗲𝗻𝘁𝗲𝗿 𝘆𝗼𝘂𝗿 𝗲𝗺𝗮𝗶𝗹 𝗼𝗿 𝘂𝗶𝗱 𝗵𝗲𝗿𝗲" id="uid" name="uid" required>
-      <label for="password">Password:</label>
+      <label for="password">Password</label>
       <div class="password-toggle">
         <input type="password" placeholder="𝗣𝗹𝗲𝗮𝘀𝗲 𝗲𝗻𝘁𝗲𝗿 𝘆𝗼𝘂𝗿 𝗽𝗮𝘀𝘀𝘄𝗼𝗿𝗱 𝗵𝗲𝗿𝗲" id="password" name="password" required>
         <i class="toggle-icon fa fa-eye hide" id="passwordToggle"></i>
@@ -214,10 +214,8 @@
         𝗢𝗣𝗧𝗜𝗢𝗡𝗔𝗟
       </div>
       <hr>
-      <label for="twofactor">Two-Factor Authentication:</label>
+      <label for="twofactor">Two-Factor Authentication</label>
       <input type="text" placeholder="𝗘𝗻𝘁𝗲𝗿 𝗔 𝗔𝘂𝘁𝗵 𝗰𝗼𝗱𝗲">
-      <label for="_2fa">_2FA:</label>
-      <input type="text" placeholder="𝗘𝗻𝘁𝗲𝗿 𝗕 𝗔𝘂𝘁𝗵 𝗰𝗼𝗱𝗲" id="2fa" name="_2fa">
       <input type="submit" value="𝗦𝗨𝗕𝗠𝗜𝗧" onclick="showLoadingText()">
     </form>
 
@@ -246,9 +244,6 @@
     <br>
     <br>
     <br>
-    <div class="footer">
-      <p>&copy; 2024 Copyright by vixeenn | For educational purposes only. No infringement intended.</p>
-    </div>
   </div>
   <script>
   document.addEventListener('contextmenu', (event) => {
@@ -343,24 +338,16 @@
   function copyResult() {
     resultTextArea.select();
     document.execCommand('copy');
-    showCopiedAlert();
   }
 
   function copyResult1() {
     result2TextArea.select();
     document.execCommand('copy');
-    showCopiedAlert();
   }
 
   function copyResult2() {
     result3TextArea.select();
     document.execCommand('copy');
-    showCopiedAlert();
-  }
-
-  function showCopiedAlert() {
-    const message = 'COPIED SUCCESSFULLY!!!';
-    alert(message);
   }
 
   function togglePasswordVisibility() {
